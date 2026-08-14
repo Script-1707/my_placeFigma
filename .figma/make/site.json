@@ -1,0 +1,10 @@
+{
+  "description": "Enables users to follow prompts step-by-step for guided tasks, enhancing productivity and ensuring accurate completion of instructions.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
