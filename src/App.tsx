@@ -8,6 +8,7 @@ import Registo from './pages/Registo'
 import PublicarImovel from './pages/PublicarImovel'
 import AgendarVisita from './pages/AgendarVisita'
 import PedidoAssistido from './pages/PedidoAssistido'
+import Mudancas from './pages/Mudancas'
 import DetalhesPedido from './pages/DetalhesPedido'
 import PainelCaptador from './pages/PainelCaptador'
 import CandidaturaCaptador from './pages/CandidaturaCaptador'
@@ -26,6 +27,7 @@ export default function App() {
           <Route path="/registo" element={<Registo />} />
           <Route path="/publicar" element={<PublicarImovel />} />
           <Route path="/pedido-assistido" element={<PedidoAssistido />} />
+          <Route path="/mudancas" element={<Mudancas />} />
           <Route path="/pedido-assistido/:id" element={<DetalhesPedido />} />
           <Route path="/captador/painel" element={<PainelCaptador />} />
           <Route path="/captador/candidatura" element={<CandidaturaCaptador />} />

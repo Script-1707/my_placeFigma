@@ -1,11 +1,13 @@
 import { useState, useMemo } from 'react'
-import { Search, SlidersHorizontal, X } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Search } from 'lucide-react'
 import { mockImoveis, type Tipologia, type TipoNegocio } from '../data/mock'
 import ImovelCard from '../components/ImovelCard'
+import Hero from '../components/Hero'
+import PedidoAssistidoBand from '../components/PedidoAssistidoBand'
+import MudancasBand from '../components/MudancasBand'
 
-const ZONAS = ['Todas', 'Talatona', 'Miramar', 'Kilamba', 'Ingombota', 'Viana', 'Rangel', 'Maianga', 'Samba', 'Cacuaco']
-const TIPOLOGIAS: Tipologia[] = ['T1', 'T2', 'T3', 'T4', 'T5+', 'Moradia', 'Comercial', 'Terreno']
-const PER_PAGE = 6
+const PER_PAGE = 12
 
 export default function Pesquisa() {
   const [texto, setTexto] = useState('')
@@ -48,139 +50,49 @@ export default function Pesquisa() {
     setPagina(1)
   }
 
-  const temFiltros = zona !== 'Todas' || tipologia || tipo || precoMin || precoMax || mobilado || garagem
+  const temFiltros = Boolean(zona !== 'Todas' || tipologia || tipo || precoMin || precoMax || mobilado || garagem)
 
   return (
-    <main style={{ backgroundColor: '#F3EFE7', minHeight: 'calc(100vh - 56px)' }}>
-      {/* Hero search */}
-      <div style={{ backgroundColor: '#132A4C', padding: '2.5rem 1rem 2rem' }}>
-        <div className="max-w-3xl mx-auto text-center">
-          <h1
-            className="text-2xl md:text-3xl font-bold mb-2"
-            style={{ fontFamily: 'var(--font-display)', color: '#FFF' }}
-          >
-            Encontra o teu imóvel em Angola
-          </h1>
-          <p className="text-sm mb-6" style={{ color: '#94A3B8' }}>
-            Apartamentos, moradias, escritórios — com garantia de verificação
-          </p>
-          <div className="flex gap-2">
-            <div className="flex-1 relative">
-              <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: '#6B7280' }} />
-              <input
-                type="text"
-                placeholder="Pesquisar por zona, título..."
-                value={texto}
-                onChange={e => { setTexto(e.target.value); setPagina(1) }}
-                className="w-full pl-9 pr-4 py-2.5 rounded-lg text-sm outline-none"
-                style={{ backgroundColor: '#FFF', border: '1px solid #E5E0D9', color: '#1A1A1A' }}
-              />
-            </div>
-            <button
-              onClick={() => setFiltrosOpen(v => !v)}
-              className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors"
-              style={{
-                backgroundColor: filtrosOpen || temFiltros ? '#AD7B3B' : '#1F3D6B',
-                color: '#FFF',
-              }}
-            >
-              <SlidersHorizontal size={15} />
-              <span className="hidden sm:inline">Filtros</span>
-              {temFiltros && <span className="w-1.5 h-1.5 rounded-full bg-white inline-block" />}
-            </button>
-          </div>
-
-          {/* Filtros expandidos */}
-          {filtrosOpen && (
-            <div
-              className="mt-3 rounded-xl p-4 text-left grid gap-3"
-              style={{ backgroundColor: '#FFF', border: '1px solid #E5E0D9' }}
-            >
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                <div>
-                  <label className="block text-xs font-medium mb-1" style={{ color: '#6B7280' }}>Zona</label>
-                  <select
-                    value={zona}
-                    onChange={e => { setZona(e.target.value); setPagina(1) }}
-                    className="w-full rounded-lg px-3 py-2 text-sm outline-none"
-                    style={{ border: '1px solid #E5E0D9', color: '#1A1A1A' }}
-                  >
-                    {ZONAS.map(z => <option key={z}>{z}</option>)}
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-xs font-medium mb-1" style={{ color: '#6B7280' }}>Tipologia</label>
-                  <select
-                    value={tipologia}
-                    onChange={e => { setTipologia(e.target.value as Tipologia | ''); setPagina(1) }}
-                    className="w-full rounded-lg px-3 py-2 text-sm outline-none"
-                    style={{ border: '1px solid #E5E0D9', color: '#1A1A1A' }}
-                  >
-                    <option value="">Todas</option>
-                    {TIPOLOGIAS.map(t => <option key={t}>{t}</option>)}
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-xs font-medium mb-1" style={{ color: '#6B7280' }}>Tipo</label>
-                  <select
-                    value={tipo}
-                    onChange={e => { setTipo(e.target.value as TipoNegocio | ''); setPagina(1) }}
-                    className="w-full rounded-lg px-3 py-2 text-sm outline-none"
-                    style={{ border: '1px solid #E5E0D9', color: '#1A1A1A' }}
-                  >
-                    <option value="">Todos</option>
-                    <option>Arrendamento</option>
-                    <option>Venda</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-xs font-medium mb-1" style={{ color: '#6B7280' }}>Preço mín. (Kz)</label>
-                  <input
-                    type="number"
-                    placeholder="0"
-                    value={precoMin}
-                    onChange={e => { setPrecoMin(e.target.value); setPagina(1) }}
-                    className="w-full rounded-lg px-3 py-2 text-sm outline-none"
-                    style={{ border: '1px solid #E5E0D9', color: '#1A1A1A' }}
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs font-medium mb-1" style={{ color: '#6B7280' }}>Preço máx. (Kz)</label>
-                  <input
-                    type="number"
-                    placeholder="Ilimitado"
-                    value={precoMax}
-                    onChange={e => { setPrecoMax(e.target.value); setPagina(1) }}
-                    className="w-full rounded-lg px-3 py-2 text-sm outline-none"
-                    style={{ border: '1px solid #E5E0D9', color: '#1A1A1A' }}
-                  />
-                </div>
-                <div className="flex flex-col gap-2 justify-end">
-                  <label className="flex items-center gap-2 text-sm cursor-pointer" style={{ color: '#1A1A1A' }}>
-                    <input type="checkbox" checked={mobilado} onChange={e => { setMobilado(e.target.checked); setPagina(1) }} className="accent-amber-700" />
-                    Mobilado
-                  </label>
-                  <label className="flex items-center gap-2 text-sm cursor-pointer" style={{ color: '#1A1A1A' }}>
-                    <input type="checkbox" checked={garagem} onChange={e => { setGaragem(e.target.checked); setPagina(1) }} className="accent-amber-700" />
-                    Garagem
-                  </label>
-                </div>
-              </div>
-              {temFiltros && (
-                <button onClick={limparFiltros} className="flex items-center gap-1 text-xs" style={{ color: '#AD7B3B' }}>
-                  <X size={12} /> Limpar filtros
-                </button>
-              )}
-            </div>
-          )}
-        </div>
-      </div>
+    <main style={{ backgroundColor: '#FFFFFF', minHeight: 'calc(100vh - 56px)' }}>
+      <Hero
+        texto={texto}
+        setTexto={(v) => { setTexto(v); setPagina(1) }}
+        zona={zona}
+        setZona={(v) => { setZona(v); setPagina(1) }}
+        tipologia={tipologia}
+        setTipologia={(v) => { setTipologia(v); setPagina(1) }}
+        tipo={tipo}
+        setTipo={(v) => { setTipo(v); setPagina(1) }}
+        precoMin={precoMin}
+        setPrecoMin={(v) => { setPrecoMin(v); setPagina(1) }}
+        precoMax={precoMax}
+        setPrecoMax={(v) => { setPrecoMax(v); setPagina(1) }}
+        mobilado={mobilado}
+        setMobilado={(v) => { setMobilado(v); setPagina(1) }}
+        garagem={garagem}
+        setGaragem={(v) => { setGaragem(v); setPagina(1) }}
+        filtrosOpen={filtrosOpen}
+        setFiltrosOpen={setFiltrosOpen}
+        temFiltros={temFiltros}
+        limparFiltros={limparFiltros}
+        totalImoveis={mockImoveis.length}
+      />
 
       {/* Resultados */}
-      <div className="max-w-6xl mx-auto px-4 py-6">
-        <p className="text-sm mb-4" style={{ color: '#6B7280' }}>
-          {resultados.length} imóve{resultados.length !== 1 ? 'is' : 'l'} encontrado{resultados.length !== 1 ? 's' : ''}
-        </p>
+      <div className="max-w-[1600px] mx-auto px-6 md:px-10 py-10 md:py-14">
+        <div className="flex items-end justify-between mb-6">
+          <div>
+            <h2
+              className="text-xl md:text-2xl font-bold"
+              style={{ fontFamily: 'var(--font-display)', color: '#132A4C' }}
+            >
+              Imóveis em destaque
+            </h2>
+            <p className="text-sm mt-1" style={{ color: '#6B7280' }}>
+              {resultados.length} imóve{resultados.length !== 1 ? 'is' : 'l'} encontrado{resultados.length !== 1 ? 's' : ''}
+            </p>
+          </div>
+        </div>
 
         {paginados.length === 0 ? (
           <div className="text-center py-16" style={{ color: '#6B7280' }}>
@@ -189,47 +101,57 @@ export default function Pesquisa() {
             <p className="text-sm mt-1">Tenta ajustar os filtros de pesquisa</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {paginados.map(im => <ImovelCard key={im.id} imovel={im} />)}
-          </div>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={pagina + texto + zona + tipologia + tipo}
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8"
+              initial="hidden"
+              animate="show"
+              variants={{ show: { transition: { staggerChildren: 0.06 } } }}
+            >
+              {paginados.map(im => (
+                <motion.div
+                  key={im.id}
+                  variants={{
+                    hidden: { opacity: 0, y: 20 },
+                    show: { opacity: 1, y: 0, transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] as const } },
+                  }}
+                >
+                  <ImovelCard imovel={im} />
+                </motion.div>
+              ))}
+            </motion.div>
+          </AnimatePresence>
         )}
 
         {/* Paginação */}
         {totalPaginas > 1 && (
-          <div className="flex justify-center items-center gap-2 mt-8">
+          <div className="flex items-center justify-center gap-4 mt-10">
             <button
               onClick={() => setPagina(p => Math.max(1, p - 1))}
               disabled={pagina === 1}
-              className="px-3 py-1.5 rounded-lg text-sm font-medium disabled:opacity-40 transition-colors"
-              style={{ border: '1px solid #D9D3C8', color: '#132A4C', backgroundColor: pagina === 1 ? 'transparent' : '#FFF' }}
+              className="px-5 py-2 rounded-full text-sm font-semibold transition-colors disabled:opacity-40"
+              style={{ border: '1px solid #D9D3C8', color: '#132A4C', backgroundColor: 'transparent' }}
             >
-              ← Anterior
+              Anterior
             </button>
-            {Array.from({ length: totalPaginas }, (_, i) => i + 1).map(p => (
-              <button
-                key={p}
-                onClick={() => setPagina(p)}
-                className="w-9 h-9 rounded-lg text-sm font-semibold transition-colors"
-                style={{
-                  backgroundColor: p === pagina ? '#132A4C' : '#FFF',
-                  color: p === pagina ? '#FFF' : '#132A4C',
-                  border: '1px solid #D9D3C8',
-                }}
-              >
-                {p}
-              </button>
-            ))}
+            <p className="text-sm font-medium" style={{ color: '#6B7280' }}>
+              Página {pagina} de {totalPaginas}
+            </p>
             <button
               onClick={() => setPagina(p => Math.min(totalPaginas, p + 1))}
               disabled={pagina === totalPaginas}
-              className="px-3 py-1.5 rounded-lg text-sm font-medium disabled:opacity-40 transition-colors"
-              style={{ border: '1px solid #D9D3C8', color: '#132A4C', backgroundColor: pagina === totalPaginas ? 'transparent' : '#FFF' }}
+              className="px-5 py-2 rounded-full text-sm font-semibold transition-colors disabled:opacity-40"
+              style={{ backgroundColor: '#AD7B3B', color: '#FFF' }}
             >
-              Seguinte →
+              Próxima
             </button>
           </div>
         )}
       </div>
+
+      <PedidoAssistidoBand />
+      <MudancasBand />
     </main>
   )
 }

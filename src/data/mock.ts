@@ -175,6 +175,127 @@ export const mockImoveis: Imovel[] = [
     proprietarioId: 'p5',
     criadoEm: '2026-08-10',
   },
+  {
+    id: '7',
+    titulo: 'Apartamento T4 Duplex na Ilha de Luanda',
+    preco: 3200000,
+    zona: 'Ingombota',
+    tipologia: 'T4',
+    tipo: 'Venda',
+    area: 210,
+    mobilado: true,
+    garagem: true,
+    descricao: 'Duplex de luxo com vista panorâmica sobre a baía, acabamentos importados, terraço privativo e 2 lugares de garagem.',
+    fotos: [
+      'https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=800&h=500&fit=crop&auto=format',
+      'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=800&h=500&fit=crop&auto=format',
+      'https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=800&h=500&fit=crop&auto=format',
+    ],
+    nivel: 'Diamante',
+    estado: 'Publicado',
+    proprietarioId: 'p2',
+    criadoEm: '2026-08-14',
+  },
+  {
+    id: '8',
+    titulo: 'Apartamento T2 Renovado em Talatona',
+    preco: 320000,
+    zona: 'Talatona',
+    tipologia: 'T2',
+    tipo: 'Arrendamento',
+    area: 90,
+    mobilado: true,
+    garagem: true,
+    descricao: 'Apartamento totalmente renovado, cozinha americana, 2 quartos com roupeiros e varanda. Condomínio com segurança e elevador.',
+    fotos: [
+      'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&h=500&fit=crop&auto=format',
+      'https://images.unsplash.com/photo-1560449017-7b8d4ce6d20d?w=800&h=500&fit=crop&auto=format',
+    ],
+    nivel: 'Ouro',
+    estado: 'Publicado',
+    proprietarioId: 'p1',
+    criadoEm: '2026-08-13',
+  },
+  {
+    id: '9',
+    titulo: 'Vivenda T5+ com Jardim em Talatona',
+    preco: 6800000,
+    zona: 'Talatona',
+    tipologia: 'T5+',
+    tipo: 'Venda',
+    area: 350,
+    mobilado: false,
+    garagem: true,
+    descricao: 'Vivenda ampla em condomínio privado, 5 suítes, jardim tratado, piscina e churrasqueira. Excelente para famílias grandes.',
+    fotos: [
+      'https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=800&h=500&fit=crop&auto=format',
+      'https://images.unsplash.com/photo-1600607688969-a5bfcd646154?w=800&h=500&fit=crop&auto=format',
+      'https://images.unsplash.com/photo-1600607687644-aac4c3eac7f4?w=800&h=500&fit=crop&auto=format',
+    ],
+    nivel: 'Diamante',
+    estado: 'Publicado',
+    proprietarioId: 'p4',
+    criadoEm: '2026-08-05',
+  },
+  {
+    id: '10',
+    titulo: 'Apartamento T3 no Kilamba com Garagem',
+    preco: 420000,
+    zona: 'Kilamba',
+    tipologia: 'T3',
+    tipo: 'Arrendamento',
+    area: 105,
+    mobilado: false,
+    garagem: true,
+    descricao: 'Apartamento amplo no Kilamba, 3 quartos, sala e cozinha separadas, garagem privativa e acesso fácil às vias principais.',
+    fotos: [
+      'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&h=500&fit=crop&auto=format',
+      'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=500&fit=crop&auto=format',
+    ],
+    nivel: 'Prata',
+    estado: 'Publicado',
+    proprietarioId: 'p3',
+    criadoEm: '2026-07-28',
+  },
+  {
+    id: '11',
+    titulo: 'Loja Comercial na Maianga',
+    preco: 950000,
+    zona: 'Maianga',
+    tipologia: 'Comercial',
+    tipo: 'Arrendamento',
+    area: 140,
+    mobilado: false,
+    garagem: false,
+    descricao: 'Loja em rua movimentada da Maianga, vitrine ampla, ideal para comércio ou serviços. Wc privativo e depósito.',
+    fotos: [
+      'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&h=500&fit=crop&auto=format',
+      'https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=800&h=500&fit=crop&auto=format',
+    ],
+    nivel: 'Prata',
+    estado: 'Publicado',
+    proprietarioId: 'p1',
+    criadoEm: '2026-08-02',
+  },
+  {
+    id: '12',
+    titulo: 'Terreno para Construção em Cacuaco',
+    preco: 1500000,
+    zona: 'Cacuaco',
+    tipologia: 'Terreno',
+    tipo: 'Venda',
+    area: 500,
+    mobilado: false,
+    garagem: false,
+    descricao: 'Terreno murado com título de propriedade regularizado, pronto para construção, próximo à via principal.',
+    fotos: [
+      'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&h=500&fit=crop&auto=format',
+    ],
+    nivel: 'Bronze',
+    estado: 'Publicado',
+    proprietarioId: 'p5',
+    criadoEm: '2026-07-22',
+  },
 ]
 
 export const mockPedidosAssistidos: PedidoAssistido[] = [
@@ -223,6 +344,16 @@ export const mockUtilizadores: Utilizador[] = [
 
 export function formatarPreco(valor: number): string {
   return valor.toLocaleString('pt-PT').replace(/\s/g, '.') + ' Kz'
+}
+
+export function quartosDeTipologia(tipologia: Tipologia): number {
+  const mapa: Record<Tipologia, number> = { T1: 1, T2: 2, T3: 3, T4: 4, 'T5+': 5, Moradia: 4, Comercial: 0, Terreno: 0 }
+  return mapa[tipologia]
+}
+
+export function wcDeTipologia(tipologia: Tipologia): number {
+  const quartos = quartosDeTipologia(tipologia)
+  return quartos === 0 ? 1 : Math.max(1, quartos - 1)
 }
 
 export function nivelConfig(nivel: NivelVerificacao) {

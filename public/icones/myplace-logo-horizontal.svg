@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 315 120">
+  <path d="M20.9,89.5 L20.9,30.5 L51.25,60 L78.9,30.5 L78.9,89.5" fill="none" stroke="#1E2A47" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M78.9,30.5 C99.1,30.5 99.1,60 78.9,60" fill="none" stroke="#E8963C" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="120" y="71" font-family="Poppins, 'Helvetica Neue', Arial, sans-serif" font-size="32" font-weight="600"><tspan fill="#E8963C">My</tspan><tspan fill="#1E2A47" dx="6"> Place</tspan></text>
+</svg>

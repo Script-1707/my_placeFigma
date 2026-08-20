@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Menu, X, LogOut, User, ChevronDown } from 'lucide-react'
+import { Menu, X, LogOut, User, ChevronDown, Globe, PlusCircle } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 
 export default function Navbar() {
@@ -8,6 +8,7 @@ export default function Navbar() {
   const navigate = useNavigate()
   const [menuOpen, setMenuOpen] = useState(false)
   const [userMenuOpen, setUserMenuOpen] = useState(false)
+  const [servicosOpen, setServicosOpen] = useState(false)
 
   function handleLogout() {
     logout()
@@ -15,44 +16,97 @@ export default function Navbar() {
     setUserMenuOpen(false)
   }
 
-  const navLinks = [
-    { label: 'Imóveis', to: '/' },
+  const mainLinks = [
+    { label: 'Início', to: '/' },
+    { label: 'Comprar/Alugar', to: '/' },
+    { label: 'Empreendimentos', to: '/' },
+  ]
+
+  const servicos = [
+    { label: 'Pedido Assistido', to: '/pedido-assistido' },
+    { label: 'Candidatura a Captador', to: '/captador/candidatura' },
+  ]
+
+  const roleLinks = [
     ...(user?.perfil === 'Proprietário' ? [{ label: 'Publicar Imóvel', to: '/publicar' }] : []),
-    ...(user?.perfil === 'Cliente' ? [{ label: 'Pedido Assistido', to: '/pedido-assistido' }] : []),
     ...(user?.perfil === 'Captador' ? [{ label: 'Painel Captador', to: '/captador/painel' }] : []),
     ...(user?.perfil === 'Administrador' ? [{ label: 'Administração', to: '/admin' }] : []),
   ]
 
   return (
     <header style={{ backgroundColor: '#132A4C', position: 'sticky', top: 0, zIndex: 40 }}>
-      <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
-        <Link
-          to="/"
-          className="flex items-center gap-2 no-underline"
-          style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.25rem', color: '#FFF' }}
-        >
-          <span style={{ color: '#AD7B3B' }}>My</span>
-          <span>Place</span>
+      <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
+        <Link to="/" className="flex items-center gap-2 no-underline shrink-0">
+          <img src="/icones/myplace-icon-reversed.svg" alt="" className="w-8 h-8" />
+          <span style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.25rem' }}>
+            <span style={{ color: '#AD7B3B' }}>My</span>
+            <span style={{ color: '#FFF' }}>Place</span>
+          </span>
         </Link>
 
-        {/* Desktop nav */}
-        <nav className="hidden md:flex items-center gap-6">
-          {navLinks.map(l => (
+        {/* Desktop main nav */}
+        <nav className="hidden lg:flex items-center gap-2 mr-auto">
+          {mainLinks.map((l, i) => (
             <Link
-              key={l.to}
+              key={l.label}
               to={l.to}
-              className="text-sm font-medium transition-colors duration-150 no-underline"
-              style={{ color: '#CBD5E1' }}
-              onMouseEnter={e => (e.currentTarget.style.color = '#AD7B3B')}
-              onMouseLeave={e => (e.currentTarget.style.color = '#CBD5E1')}
+              className="text-sm font-semibold px-3.5 py-2 rounded-full no-underline transition-colors"
+              style={{
+                backgroundColor: i === 0 ? '#AD7B3B' : 'rgba(255,255,255,0.08)',
+                color: i === 0 ? '#FFF' : '#CBD5E1',
+              }}
+              onMouseEnter={e => { if (i !== 0) e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.16)' }}
+              onMouseLeave={e => { if (i !== 0) e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.08)' }}
             >
               {l.label}
             </Link>
           ))}
+
+          <div className="relative">
+            <button
+              onClick={() => setServicosOpen(v => !v)}
+              className="flex items-center gap-1 text-sm font-semibold px-3.5 py-2 rounded-full transition-colors"
+              style={{ color: '#CBD5E1', backgroundColor: 'transparent' }}
+              onMouseEnter={e => (e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.08)')}
+              onMouseLeave={e => (e.currentTarget.style.backgroundColor = 'transparent')}
+            >
+              Serviços
+              <ChevronDown size={14} />
+            </button>
+            {servicosOpen && (
+              <div
+                className="absolute left-0 top-full mt-2 rounded-xl overflow-hidden shadow-xl w-52"
+                style={{ backgroundColor: '#FFF', border: '1px solid #E5E0D9' }}
+              >
+                {[...servicos, ...roleLinks].map(s => (
+                  <Link
+                    key={s.label}
+                    to={s.to}
+                    onClick={() => setServicosOpen(false)}
+                    className="block px-4 py-2.5 text-sm no-underline transition-colors"
+                    style={{ color: '#132A4C' }}
+                    onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#F3EFE7')}
+                    onMouseLeave={e => (e.currentTarget.style.backgroundColor = 'transparent')}
+                  >
+                    {s.label}
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
         </nav>
 
-        {/* Desktop user area */}
-        <div className="hidden md:flex items-center gap-3">
+        {/* Desktop right area */}
+        <div className="hidden lg:flex items-center gap-3 shrink-0 ml-auto">
+          <button
+            className="flex items-center gap-1.5 text-sm font-medium px-2 py-1.5 rounded-lg transition-colors"
+            style={{ color: '#CBD5E1' }}
+          >
+            <Globe size={16} />
+            🇦🇴 PT
+            <ChevronDown size={13} />
+          </button>
+
           {user ? (
             <div className="relative">
               <button
@@ -86,28 +140,30 @@ export default function Navbar() {
               )}
             </div>
           ) : (
-            <>
-              <Link
-                to="/login"
-                className="text-sm font-medium no-underline"
-                style={{ color: '#CBD5E1' }}
-              >
-                Entrar
-              </Link>
-              <Link
-                to="/registo"
-                className="text-sm font-semibold px-4 py-1.5 rounded-lg no-underline transition-colors"
-                style={{ backgroundColor: '#AD7B3B', color: '#FFF' }}
-              >
-                Registar
-              </Link>
-            </>
+            <Link
+              to="/login"
+              className="flex items-center gap-2 text-sm font-semibold no-underline px-3.5 py-2 rounded-full transition-colors"
+              style={{ color: '#FFF', border: '1px solid rgba(255,255,255,0.35)' }}
+              onMouseEnter={e => (e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.08)')}
+              onMouseLeave={e => (e.currentTarget.style.backgroundColor = 'transparent')}
+            >
+              Entrar / Registar
+            </Link>
           )}
+
+          <Link
+            to="/publicar"
+            className="flex items-center gap-1.5 text-sm font-semibold px-4 py-2 rounded-full no-underline transition-colors"
+            style={{ backgroundColor: '#AD7B3B', color: '#FFF' }}
+          >
+            <PlusCircle size={15} />
+            Anuncie o seu Imóvel
+          </Link>
         </div>
 
         {/* Mobile toggle */}
         <button
-          className="md:hidden p-2 rounded"
+          className="lg:hidden p-2 rounded"
           style={{ color: '#FFF' }}
           onClick={() => setMenuOpen(v => !v)}
           aria-label="Menu"
@@ -118,10 +174,10 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       {menuOpen && (
-        <div className="md:hidden px-4 pb-4 flex flex-col gap-2" style={{ backgroundColor: '#132A4C', borderTop: '1px solid #1F3D6B' }}>
-          {navLinks.map(l => (
+        <div className="lg:hidden px-4 pb-4 flex flex-col gap-2" style={{ backgroundColor: '#132A4C', borderTop: '1px solid #1F3D6B' }}>
+          {mainLinks.map(l => (
             <Link
-              key={l.to}
+              key={l.label}
               to={l.to}
               className="text-sm py-2 no-underline"
               style={{ color: '#CBD5E1' }}
@@ -130,6 +186,25 @@ export default function Navbar() {
               {l.label}
             </Link>
           ))}
+          {[...servicos, ...roleLinks].map(l => (
+            <Link
+              key={l.label}
+              to={l.to}
+              className="text-sm py-2 no-underline"
+              style={{ color: '#CBD5E1' }}
+              onClick={() => setMenuOpen(false)}
+            >
+              {l.label}
+            </Link>
+          ))}
+          <Link
+            to="/publicar"
+            className="text-sm font-semibold py-2 px-4 rounded-lg text-center no-underline"
+            style={{ backgroundColor: '#AD7B3B', color: '#FFF' }}
+            onClick={() => setMenuOpen(false)}
+          >
+            Anuncie o seu Imóvel
+          </Link>
           <div className="pt-2 flex flex-col gap-2" style={{ borderTop: '1px solid #1F3D6B' }}>
             {user ? (
               <button
@@ -140,19 +215,9 @@ export default function Navbar() {
                 Terminar sessão
               </button>
             ) : (
-              <>
-                <Link to="/login" className="text-sm py-2 no-underline" style={{ color: '#CBD5E1' }} onClick={() => setMenuOpen(false)}>
-                  Entrar
-                </Link>
-                <Link
-                  to="/registo"
-                  className="text-sm font-semibold py-2 px-4 rounded-lg text-center no-underline"
-                  style={{ backgroundColor: '#AD7B3B', color: '#FFF' }}
-                  onClick={() => setMenuOpen(false)}
-                >
-                  Registar
-                </Link>
-              </>
+              <Link to="/login" className="text-sm py-2 no-underline" style={{ color: '#CBD5E1' }} onClick={() => setMenuOpen(false)}>
+                Entrar / Registar
+              </Link>
             )}
           </div>
         </div>
